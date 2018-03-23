@@ -18,7 +18,8 @@
  <th><a href='/trier/prenom/<%=objOrdre.prenom%>'><%= __('Prénom') %></a></th>
  <th><a href='/trier/telephone/<%=objOrdre.telephone%>'><%= __('Téléphone') %></a></th>
  <th><a href='/trier/courriel/<%=objOrdre.courriel%>'><%= __('Courriel') %></a></th>
- <th><i class="far fa-trash-alt"></i></th> 
+ <th><i class="far fa-trash-alt"></i></th>
+<th><a class="ajouter" href="#" ><i class="fas fa-plus"></i></th>
  </tr>
  <% adresses.forEach(elm => {%>
  <tr>
@@ -27,8 +28,107 @@
  <td contenteditable='true'><%= elm.prenom %></td>
  <td contenteditable='true'><%= elm.telephone %></td>
  <td contenteditable='true'><%= elm.courriel %></td>
- <td><a href="/delete/<%= elm._id %>"><i class="far fa-trash-alt"></i></a></td>
+ <td><a class='supprimer' href="#"><i class="far fa-trash-alt"></i></a></td>
  <td><a class='sauver' href="#"><i class="fas fa-save"></i></a></td>
  </tr>
  <% }) %>
  </table>
+
+ <script type="text/javascript">
+     
+let elmSauver = document.querySelectorAll('.sauver')
+console.log('elmSauver = ' + elmSauver.length)
+for (elm of elmSauver) {
+	elm.addEventListener('click', function(){
+		console.log('ok')
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', "ajax_sauver", true);
+		let laLigne = this.parentNode.parentNode
+		let id = laLigne.children[0].innerHTML
+		let nom = laLigne.children[1].innerHTML
+		let prenom = laLigne.children[2].innerHTML
+		let telephone = laLigne.children[3].innerHTML
+		let courriel = laLigne.children[4].innerHTML
+		data = { 
+			"nom" : nom,
+			"prenom" : prenom,
+			"telephone" : telephone,
+			"courriel" : courriel,
+			"_id" : id 
+		}
+		sData = JSON.stringify(data);
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.send(sData);
+		var envoi = xhr.addEventListener("readystatechange", traiterRequest, false);
+	 })
+ }
+////////////////////////////////fonction pour bouton supprimer ajax
+let elmSupprimer = document.querySelectorAll('.supprimer')
+for (elm of elmSupprimer) {
+    elm.addEventListener('click', function() {
+        let laLigne = this.parentNode.parentNode    
+        let id = laLigne.children[0].innerHTML
+        console.log('ok')
+		xhr = new XMLHttpRequest();
+		xhr.open('POST', "ajax_supprimer", true);
+        
+        data = {
+			"_id" : id
+        }
+            
+        sData = JSON.stringify(data);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(sData);
+        var envoi = xhr.addEventListener("readystatechange", traiterRequest, false);
+        //Spprime la ligne à détruire par l'utilisateur
+        if(envoi != 0) {
+            laLigne.parentNode.removeChild(laLigne);
+        }
+    })
+}
+     
+let elmAjouter = document.querySelectorAll('.ajouter')   
+for (elm of elmAjouter) {
+    elm.addEventListener('click', function() {
+        
+        let corpsTableau = document.querySelector('.tableau tbody');
+        let laLigne = document.createElement("TR")
+        xhr = new XMLHttpRequest();
+        xhr.open('POST', "/ajax_ajouter", true);
+        data = {
+            "nom" : "",
+            "prenom" : "",
+            "telephone" : "",
+            "courriel" : ""
+        }
+            
+        sData = JSON.stringify(data);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(sData);
+        xhr.addEventListener("readystatechange", function() {
+            let envoi = traiterRequest();
+            if(envoi != 0) {
+                
+                let ligneVide = '<td >' + envoi + '</td>' + '<td contenteditable="true"></td>' + '<td contenteditable="true"></td>' + '<td contenteditable="true"></td>' + '<td contenteditable="true"></td>' + '<td><a class="supprimer" href="#"><i class="far fa-trash-alt"><i class="fas fa-trash-alt" aria-hidden="true"></i></a></td>' + '<td><a class="sauver" href="#"><i class="fas fa-save"></i></a></td>'
+                laLigne.innerHTML = ligneVide
+                corpsTableau.appendChild(laLigne);
+            }
+        }, false);   
+    })
+}
+// Pour traiter le résultat transmis par l'application serveur 
+function traiterRequest(e) {
+	var id = 0;
+	console.log("xhr.readyState = " + xhr.readyState)
+	console.log("xhr.status = " + xhr.status)
+	if(xhr.readyState == 4 && xhr.status == 200) {
+		console.log('ajax fonctionne')
+		var reponseRequete = JSON.parse(xhr.responseText);
+		console.log(reponseRequete)
+		console.log("response._id = " + reponseRequete._id)
+		console.log(xhr.responseText);
+		id = reponseRequete._id;
+	}
+	return id;
+}
+</script>
