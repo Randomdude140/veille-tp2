@@ -1,0 +1,34 @@
+<%
+	let objOrdre = {
+		"_id":"asc",
+		"nom":"asc",
+		"prenom":"asc",
+		"telephone":"asc",
+		"courriel":"asc"
+	}
+	if(typeof cle!=="undefined" && cle) {
+		objOrdre[cle] = ordre
+	}
+%>
+
+<table class="tableau">
+ <tr>
+ <th><a href='/trier/id/<%=objOrdre._id%>'>ID</a></th>
+ <th><a href='/trier/nom/<%=objOrdre.nom%>'><%= __('Nom') %></a></th> 
+ <th><a href='/trier/prenom/<%=objOrdre.prenom%>'><%= __('Prénom') %></a></th>
+ <th><a href='/trier/telephone/<%=objOrdre.telephone%>'><%= __('Téléphone') %></a></th>
+ <th><a href='/trier/courriel/<%=objOrdre.courriel%>'><%= __('Courriel') %></a></th>
+ <th><i class="far fa-trash-alt"></i></th> 
+ </tr>
+ <% adresses.forEach(elm => {%>
+ <tr>
+ <td><%= elm._id %></td>
+ <td contenteditable='true'><%= elm.nom %></td>
+ <td contenteditable='true'><%= elm.prenom %></td>
+ <td contenteditable='true'><%= elm.telephone %></td>
+ <td contenteditable='true'><%= elm.courriel %></td>
+ <td><a href="/delete/<%= elm._id %>"><i class="far fa-trash-alt"></i></a></td>
+ <td><a class='sauver' href="#"><i class="fas fa-save"></i></a></td>
+ </tr>
+ <% }) %>
+ </table>
