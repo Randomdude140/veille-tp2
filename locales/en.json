@@ -6,5 +6,20 @@
 	"Nom": "Last name",
 	"Prénom": "First name",
 	"Téléphone": "Phone",
-	"Courriel": "Email"
+	"Courriel": "Email",
+	"Clavardage": "Chat",
+	"Bienvenue à l'atelier Node.js": "Welcome to Node.js workshop",
+	"Node.js - Express - mongoDB et EJS": "Node.js - Express - mongoDB and EJS",
+	"Atelier Node.js": "Node.js workshop",
+	"Formation continue": "Continuing Education",
+	"Collège de Maisonneuve": "Maisonneuve College",
+	"Le site officiel de Node.js": "Node.js official website",
+	"Fondation Node.js": "Node.js Foundation",
+	"Fondation Linux": "Linux Foundation",
+	"Télécharger mongoDB": "Download mongoDB",
+	"Enregistrement": "Registering",
+	"Utilisateurs en ligne": "Online users",
+	"Transmettre": "Transmit",
+	"Ajouter": "Add",
+	"courriel": "courriel"
 }
