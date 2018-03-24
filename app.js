@@ -145,6 +145,14 @@ app.post('/ajax_sauver', (req,res) => {
 	})
 })
 
+app.post('/ajax_supprimer', (req, res) => {
+	db.collection('adresse').findOneAndDelete({"_id": ObjectID(req.body._id)}, (err, resultat) => {
+		if (err) return console.log(err)
+		console.log('supprimé de la BD')
+ 		res.send(JSON.stringify(req.body))
+ 	})
+})
+
 MongoClient.connect('mongodb://127.0.0.1:27017', (err, database) => {
 	if (err) return console.log(err)
 	db = database.db('carnet_adresse')
