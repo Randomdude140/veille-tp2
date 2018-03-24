@@ -135,6 +135,16 @@ app.get('/chat', (req, res) => {
 	res.render('socket_vue.ejs');
 })
 
+app.post('/ajax_sauver', (req,res) => {
+	req.body._id = ObjectID(req.body._id)
+
+	db.collection('adresse').save(req.body, (err, result) => {
+		if (err) return console.log(err)
+   		console.log('sauvegarder dans la BD')
+		res.send(JSON.stringify(req.body));
+	})
+})
+
 MongoClient.connect('mongodb://127.0.0.1:27017', (err, database) => {
 	if (err) return console.log(err)
 	db = database.db('carnet_adresse')
